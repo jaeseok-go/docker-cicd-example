@@ -6,7 +6,7 @@ services: docker
 
 before_install:
   - echo "Start creating an image with Dockerfile"
-  - docker build -t gojeasuk3/docker-react-app -f Dockerfile.dev .
+  - docker build -t gojeasuk3/docker-react-app -f ./react-app/Dockerfile.dev .
 
 # "-e CI=true": TravisCI에서 필요한 명령어
 # "-- --coverage": 테스트 내용 상세하게 로깅
