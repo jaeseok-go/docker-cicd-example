@@ -16,4 +16,6 @@ CMD ["npm", "run", "build"]
 # 빌드된 파일을 nginx 경로로 이동한다.
 FROM nginx
 
+EXPOSE 80
+
 COPY --from=builder /usr/src/app/build /usr/share/nginx/html
