@@ -13,5 +13,18 @@ before_install:
 script:
   - docker run -e CI=true gojeasuk3/docker-react-app npm run test -- --coverage
 
+deploy:
+  provider: elasticbeanstalk
+  region: "ap-northeast-2"
+  app: "docker-cicd-app"
+  env: "DockerCicdApp-env"
+  bucket-name: "elasticbeanstalk-ap-northeast-2-444766037010"
+  bucket-path: "docker-cicd-app"
+  on:
+    branch: main
+
+access_key_id: $AWS_ACCESS_KEY
+secret_access_key: $AWS_SECRET_ACCESS_KEY
+
 after_success:
   - echo "Test success!"
