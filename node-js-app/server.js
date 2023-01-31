@@ -15,7 +15,7 @@ db.pool.query(
     id INTEGER AUTO INCREMENT,
     value TEXT,
     PRIMARY KEY (id))`,
-    (err, results, fields) => console.log('results', results);
+    (err, results, fields) => console.log('results', results)
 );
 
 app.get('/api/values', function (req, res, next) {

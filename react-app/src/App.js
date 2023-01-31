@@ -1,22 +1,56 @@
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
+  const [lists, setLists] = useState([]);
+  const [value, setValue] = useState("");
+
+  useEffect(() => {
+    axios.get('/api/values')
+        .then(response => {
+          console.log('response', response.data);
+          setLists(response.data);
+        })
+  }, [])
+
+  const changeHandler = (event) => {
+    setValue(event.currentTarget.value);
+  }
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    axios.post('/api/value', { value : value })
+        .then(response => {
+          if (response.data.success) {
+            console.log('response.data', response.data);
+            setLists([...lists, response.data]);
+            setValue("");
+          }
+          else {
+            alert("Fail to insert on DB");
+          }
+        })
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          learn react
-        </a>
+        <div className="container">
+
+          {lists && lists.map((list, index) => {
+            <li key={index}>
+              {list.value}
+            </li>
+          })}
+
+          <form className="example" onSubmit={submitHandler}>
+            <input type="text" placeholder="입력해주세요." onChange={changeHandler} value={value}/>
+          </form>
+        </div>
       </header>
     </div>
   );
