@@ -3,6 +3,41 @@ version: "3"
 services:
   react-app:
     build:
-      dockerfile: ./react-app/Dockerfile
+      context: ./react-app
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./react-app:/app
+    stdin_open: true
+
+  nginx:
+    # 서버가 꺼지는 경우 항상 재시작
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     ports:
       - "3000:80"
+
+  node-js-app:
+    build:
+      context: ./node-js-app
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./node-js-app:/app
+
+  mysql:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    # 임의로 정지하지 않는한 항상 재시작
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/mysql_data:/var/lib/mysql
+      - ./mysql/sqls/:/docker-entrypoint-initdb.d/
+    environment:
+      MYSQL_ROOT_PASSWORD: jaeseok
+      MYSQL_DATABASE: cicdapp
