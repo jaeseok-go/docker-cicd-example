@@ -4,11 +4,11 @@ FROM node:alpine as builder
 
 WORKDIR /usr/src/app
 
-COPY ./react-app/package.json ./
+COPY ./package.json ./
 
 RUN npm install
 
-COPY ./react-app/ ./
+COPY ./ ./
 
 CMD ["npm", "run", "build"]
 

@@ -2,10 +2,10 @@ FROM node:alpine
 
 WORKDIR /app
 
-COPY ./node-js-app/package.json ./
+COPY ./package.json ./
 
 RUN npm install
 
-COPY ./node-js-app/ .
+COPY . .
 
 CMD ["npm", "run", "dev"]
