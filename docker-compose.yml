@@ -36,8 +36,10 @@ services:
     ports:
       - "3306:3306"
     volumes:
+      # 컨테이너에 저장되는 데이터를 로컬에 마운팅
       - ./mysql/mysql_data:/var/lib/mysql
-      - ./mysql/sqls/:/docker-entrypoint-initdb.d/
+      # docker container init 시점에 실행될 sql 마운팅
+      - ./mysql/sql/:/docker-entrypoint-initdb.d/
     environment:
       MYSQL_ROOT_PASSWORD: jaeseok
       MYSQL_DATABASE: cicdapp

@@ -10,13 +10,13 @@ const app = express();
 app.use(bodyParser.json());
 
 // 테이블 생성하기
-db.pool.query(
-    `CREATE TABLE LISTS (
-    id INTEGER AUTO INCREMENT,
-    value TEXT,
-    PRIMARY KEY (id))`,
-    (err, results, fields) => console.log('results', results)
-);
+// db.pool.query(
+//     `CREATE TABLE LISTS (
+//     id INTEGER AUTO INCREMENT,
+//     value TEXT,
+//     PRIMARY KEY (id))`,
+//     (err, results, fields) => console.log('results', results)
+// );
 
 app.get('/api/values', function (req, res, next) {
     db.pool.query('SELECT * FROM lists',
