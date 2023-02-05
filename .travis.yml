@@ -6,12 +6,27 @@ services: docker
 
 before_install:
   - echo "Start creating an image with Dockerfile"
-  - docker build -t gojeasuk3/docker-react-app -f ./react-app/Dockerfile.dev .
+  - docker build -t gojeasuk3/docker-react-app -f ./react-app/Dockerfile.dev ./react-app
 
 # "-e CI=true": TravisCI에서 필요한 명령어
 # "-- --coverage": 테스트 내용 상세하게 로깅
 script:
-  - docker run -e CI=true gojeasuk3/docker-react-app npm run test -- --coverage
+  - docker run -e CI=true gojeasuk3/docker-react-app npm run test
+
+after_success:
+  - echo "Test success... Build Start"
+  # Docker Image 빌드
+  - docker build -t gojeasuk3/cicd-react-app ./react-app
+  - docker build -t gojeasuk3/cicd-node-js-app ./node-js-app
+  - docker build -t gojeasuk3/cicd-nginx ./nginx
+  # Docker Hub 인증
+  - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" -- password-stdin
+  # Docker Hub로 Image push
+  - docker push gojeasuk3/cicd-react-app
+  - docker push gojeasuk3/cicd-node-js-app
+  - docker push gojeasuk3/cicd-nginx
+
+  - echo "Build success..."
 
 deploy:
   provider: elasticbeanstalk
@@ -25,6 +40,3 @@ deploy:
 
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_ACCESS_KEY
-
-after_success:
-  - echo "Test success!"
