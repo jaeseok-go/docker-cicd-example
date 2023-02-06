@@ -4,7 +4,7 @@ services:
   react-app:
     build:
       context: ./react-app
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     volumes:
       - /app/node_modules
       - ./react-app:/app

@@ -1,0 +1,33 @@
+{
+  "AWSDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "react-app",
+      "image": "gojeasuk3/cicd-react-app",
+      "hostname": "react-app",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "node-js-app",
+      "image": "gojeasuk3/cicd-node-js-app",
+      "hostname": "node-js-app",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "nginx",
+      "image": "gojeasuk3/cicd-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings" : [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["react-app", "node-js-app"],
+      "memory": 128
+    }
+  ]
+}
